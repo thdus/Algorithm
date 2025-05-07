@@ -1,39 +1,33 @@
 import java.util.Scanner;
-import java.io.FileInputStream;
-
 
 class Solution
 {
 	public static void main(String args[]) throws Exception
 	{
-        
-		
 		Scanner sc = new Scanner(System.in);
 
-		for(int test_case = 1; test_case <= 10; test_case++)
-		{
-		
-			int tc = sc.nextInt();
-			String word = sc.next();
-			String sen = sc.next();
-		
-			int cnt =0;
-			for(int i=0; i<=sen.length()-word.length(); i++) {
-				boolean isok=true;
-				for(int j=0; j<word.length();j++) {
-					if(sen.charAt(i+j)!=word.charAt(j)) {
-						isok=false;
-						break;
-						
+		for(int t=1; t<=10; t++) {
+			t = sc.nextInt();
+			
+			String ans = sc.next();
+			String ans1 = sc.next();
+			int cnt = 0;
+			for(int i=0; i<ans1.length()-1; i++) {
+				for(int j=0; j<ans.length(); j++) {
+					if(ans1.charAt(i)==ans.charAt(j)) {
+						i++;
+					}else {
+						if(j>0) {
+							i=i-j;
+						}
+						break;}
+				
+				if(j==ans.length()-1) {
+					cnt++;
 					}
 				}
-					if(isok) {
-						cnt++;
-				}
-				
-			}System.out.println("#"+test_case+ " "+cnt);
-
-
+			}
+			System.out.println("#"+t+" "+cnt);
 		}
 	}
 }
