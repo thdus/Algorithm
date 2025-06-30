@@ -1,73 +1,48 @@
-import java.util.Scanner;
- 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+
 public class Main {
- 
-	public static boolean[][] arr;
-	public static int min = 64;
- 
-	public static void main(String[] args) {
- 
-		Scanner in = new Scanner(System.in);
- 
-		int N = in.nextInt();
-		int M = in.nextInt();
- 
-		arr = new boolean[N][M];
-		
-        
-		
-		for (int i = 0; i < N; i++) {
-			String str = in.next();
-			
-			for (int j = 0; j < M; j++) {
-				if (str.charAt(j) == 'W') {
-					arr[i][j] = true;		
-				} else {
-					arr[i][j] = false;		
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		String[] size = br.readLine().split(" ");
+		int n = Integer.parseInt(size[0]);
+		int m = Integer.parseInt(size[1]);
+
+		char[][] map = new char[n][m];
+
+		for (int i = 0; i < n; i++) {
+			String line = br.readLine();
+			for (int j = 0; j < m; j++) {
+				map[i][j] = line.charAt(j);
+			}
+		}
+
+		int min = Integer.MAX_VALUE;
+
+		for (int i = 0; i <= n - 8; i++) {
+			for (int j = 0; j <= m - 8; j++) {
+				int count1 = 0; 
+				int count2 = 0; 
+
+				for (int x = 0; x < 8; x++) {
+					for (int y = 0; y < 8; y++) {
+						char current = map[i + x][j + y];
+						if ((x + y) % 2 == 0) { 
+							if (current != 'W') count1++;
+							if (current != 'B') count2++;
+						} else {
+							if (current != 'B') count1++;
+							if (current != 'W') count2++;
+						}
+					}
 				}
- 
+
+				min = Math.min(min, Math.min(count1, count2));
 			}
 		}
- 
-		
-		int N_row = N - 7;
-		int M_col = M - 7;
- 
-		for (int i = 0; i < N_row; i++) {
-			for (int j = 0; j < M_col; j++) {
-				find(i, j);
-			}
-		}
+
 		System.out.println(min);
-	}
- 
-	
-	public static void find(int x, int y) {
-		int end_x = x + 8;
-		int end_y = y + 8;
-		int count = 0;
- 
-		boolean TF = arr[x][y];	 
- 
-		for (int i = x; i < end_x; i++) {
-			for (int j = y; j < end_y; j++) {
- 
-			
-				if (arr[i][j] != TF) {	
-					count++;
-				}
-				
-				
-				TF = (!TF);
-			}
-			
-			TF = !TF;
-		}
-		
-	
-		count = Math.min(count, 64 - count);
-		
-		
-		min = Math.min(min, count);
 	}
 }
