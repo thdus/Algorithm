@@ -1,31 +1,55 @@
+
 import java.io.*;
+
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-        
-        PriorityQueue<Integer> pQueue = new PriorityQueue<>((n1,n2)->{
-  
-            if(Math.abs(n1) == Math.abs(n2)) {
-                return n1-n2;
-            }
-  
-            return Math.abs(n1)-Math.abs(n2);
-        });
+	public static void main(String[] args) throws IOException{
+		StringBuilder sb = new StringBuilder();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
+		PriorityQueue<Integer> maxH = new PriorityQueue<>();
+		PriorityQueue<Integer> minH = new PriorityQueue<>(Collections.reverseOrder());
+		
+		for(int i=0; i<N; i++) {
+			int x = Integer.parseInt(br.readLine());
+			if(x==0) {
+				int min = 0;
+				int max =0;
+				
+				 if (!minH.isEmpty())
+	                    min = minH.remove();
+	                if (!maxH.isEmpty())
+	                    max = maxH.remove();
+				
+				if(min==0&&max!=0) {
+					sb.append(max).append('\n');
+				}
+				else if(min==0&&max==0) {
+					sb.append(0).append('\n');
+				}
+				else if(min!=0&&max==0) {
+					sb.append(min).append('\n');
+				}
+				else {
+					if(min*-1>max) {
+						sb.append(max).append('\n');
+						minH.add(min);
+					}else {
+						sb.append(min).append('\n');
+						maxH.add(max);
+					}
+				}
 
-        int N = Integer.parseInt(br.readLine());
-        for(int i=0; i<N; i++) {
-            int num = Integer.parseInt(br.readLine());
-
-            if(num == 0) {
-                sb.append(pQueue.isEmpty() ? 0 : pQueue.remove()).append('\n');
-                continue;
-            }
-          
-            pQueue.add(num);
-        }
-        System.out.println(sb);
-    }
+			}else {
+				if(x<0) {
+					minH.add(x);
+				}else {
+					maxH.add(x);
+				}
+			}
+		}
+		System.out.println(sb);
+		
+	}
 }
