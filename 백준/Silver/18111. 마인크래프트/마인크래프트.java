@@ -11,6 +11,7 @@ public class Main{
 		int B = Integer.parseInt(st.nextToken());
 		
 		int[][] arr = new int[N][M];
+		
 		int min = Integer.MAX_VALUE;
 		int max =0;
 		
@@ -24,14 +25,15 @@ public class Main{
 					min=h;
 				}
 				
-				if(h>max) {
+				else if(h>max) {
 					max=h;
 				}
+				
 			}
 		}
 		int[] time = new int[257];
 		for(int h=min; h<=max; h++) {
-			int temp =B;
+			int temp = B;
 			for(int i=0; i<N; i++) {
 				for(int j=0; j<M; j++) {
 					if(arr[i][j]>h) {
@@ -53,14 +55,11 @@ public class Main{
 		int minHigh = min;
 		for(int i=min; i<=max; i++) {
 			if(time[i]<=minTime) {
-				minTime = time[i];
-				minHigh = i;
-				
+				minTime=time[i];
+				minHigh=i;
 			}
 		}
-		
-		
 		System.out.println(minTime+" "+minHigh);
-	
+		
 	}
 }
