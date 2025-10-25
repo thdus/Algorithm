@@ -1,43 +1,45 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.StringTokenizer;
-import java.util.Comparator;
- 
-public class Main {
-	public static void main(String[] args) throws IOException {		
- 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+import java.io.*;
+import java.util.*;
+
+public class Main{
+	public static class Pair implements Comparable<Pair>{
+		int age;
+		String name;
 		
-		int N = Integer.parseInt(br.readLine());
-		String[][] arr = new String[N][2];
-		
- 
-		for(int i = 0; i < N; i++) {
-			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-			arr[i][0] = st.nextToken();	// 나이
-			arr[i][1] = st.nextToken();	// 이름
+		Pair(int age, String name){
+			this.age = age;
+			this.name = name;
 		}
- 
 		
-		Arrays.sort(arr, new Comparator<String[]>() {
-			// 나이순으로 정렬
-			@Override
-			public int compare(String[] s1, String[] s2) {
-				return Integer.parseInt(s1[0]) - Integer.parseInt(s2[0]);
-			}
-			
-		});
- 
+		
+		@Override
+		public int compareTo(Pair o) {
+		
+			return age-o.age;
+		}
+		
+	}
+	
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
 		
-		for(int i = 0; i < N; i++) {
-			sb.append(arr[i][0]).append(' ').append(arr[i][1]).append('\n');
+		int n = Integer.parseInt(br.readLine());
+		ArrayList<Pair> list = new ArrayList();
+		for(int i=0; i<n; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int age = Integer.parseInt(st.nextToken());
+			String name = st.nextToken();
+			list.add(new Pair(age, name));
 		}
-        
+		list.sort(null);
+		for(int i=0; i<n; i++) {
+			sb.append(list.get(i).age+" "+list.get(i).name+"\n");
+		}
 		System.out.println(sb);
 		
 	}
- 
+	
+	
+	
 }
