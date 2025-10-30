@@ -4,15 +4,41 @@ import java.io.*;
 class Solution {
     public String solution(String s) {
         StringTokenizer st = new StringTokenizer(s);
-        int max = Integer.MIN_VALUE;
-        int min = Integer.MAX_VALUE;
+        
+        List<Integer> result = new ArrayList();
+        
+        int i =0;
+        
+        
         
         while(st.hasMoreTokens()){
-            int a = Integer.parseInt(st.nextToken());
-            min = Math.min(min,a);
-            max = Math.max(max,a);
+            
+                result.add(Integer.parseInt(st.nextToken()));
+                
         }
         
-        return min+" "+max;
+        int[] arr = new int[result.size()];
+        
+        for(int n:result){
+            arr[i++] = n;
+        }
+        
+        Arrays.sort(arr);
+        
+        for(int j=0; j<arr.length; j++){
+            System.out.println(arr[j]);
+        }
+        
+        
+        int min = arr[0];
+        int max = arr[arr.length-1];
+        
+        String ans =min+" "+max;
+        
+        return ans;
+        
+        
+        
+        
     }
 }
