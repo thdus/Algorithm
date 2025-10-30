@@ -1,19 +1,25 @@
+import java.util.*;
+
 class Solution {
     public int solution(int[][] sizes) {
-        int max1 = 0;
-        int max2 =0;
+        
+        int[] w = new int[sizes.length];
+        int[] h = new int[sizes.length];
         
         for(int i=0; i<sizes.length; i++){
-            if(sizes[i][0]>sizes[i][1]){
-                max1 = Math.max(max1,sizes[i][0]);
-                max2 = Math.max(max2,sizes[i][1]);      
+            if(sizes[i][0]>=sizes[i][1]){
+                w[i] = sizes[i][0];
+                h[i] = sizes[i][1];
             }else{
-                max1 = Math.max(max1,sizes[i][1]);
-                max2 = Math.max(max2,sizes[i][0]); 
+                w[i] = sizes[i][1];
+                h[i] = sizes[i][0];
             }
-        }
+        }   
         
+        Arrays.sort(w);
+        Arrays.sort(h);
+   
+        return w[sizes.length-1]*h[sizes.length-1];
         
-        return max1*max2;
     }
 }
