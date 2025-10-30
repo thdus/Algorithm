@@ -5,27 +5,27 @@ class Solution {
     static Set<Integer> numberSet;
     
     public int solution(String numbers) {
-        
-        numberSet = new HashSet();
         visited = new boolean[numbers.length()];
+        numberSet = new HashSet();
+        dfs("", numbers);
         
-        int cnt = 0;
-        dfs("",numbers);
-        
-        for(int num : numberSet){
-            if(isPrime(num)){
+        int cnt =0;
+        for(int n:numberSet){
+           
+            if(isPrime(n)){
+                 System.out.println(n);
                 cnt++;
             }
         }
         
-        
-        return cnt;
+          return cnt;
     }
+
+    
+
+    
     private void dfs(String s, String numbers){
-        
-        if(!s.equals("")){
-            numberSet.add(Integer.parseInt(s));
-        }
+        if(!s.equals("")) numberSet.add(Integer.parseInt(s));
         
         for(int i=0; i<numbers.length(); i++){
             if(!visited[i]){
@@ -35,11 +35,12 @@ class Solution {
             }
         }
     }
-    
+
     private boolean isPrime(int num){
         if(num<2) return false;
         for(int i=2; i<=Math.sqrt(num); i++){
             if(num%i==0) return false;
-        } return true;
+        }
+    return true;
     }
 }
