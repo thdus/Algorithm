@@ -5,7 +5,7 @@ with summation as (
         select * from first_half
         union all
         select * from july
-    ) as u
+    ) AS A
     group by flavor
     order by tot desc
 )
