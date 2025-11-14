@@ -3,18 +3,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int n = Integer.parseInt(br.readLine());
-		int cnt = 0;
 		
-		for (int i = 0; i < Integer.MAX_VALUE; i++) {
-			if ((i + "").contains("666"))
+		int n = Integer.parseInt(br.readLine());
+		int cnt =0;
+		for(int i=0; i<Integer.MAX_VALUE; i++) {
+			
+			if((i+"").contains("666")) {
 				cnt++;
-			if (cnt == n) {
-				System.out.println(i);
-				return;
+				if(cnt==n) {
+					System.out.println(i);
+					break;
+				}
 			}
 		}
+		
+		
 	}
 }
