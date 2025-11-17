@@ -1,61 +1,66 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static int N, M;
-    static int map[][];
-    static boolean visited[][];
-    static int[] nearX = {-1, 0, 1, 0};
-    static int[] nearY = {0, 1, 0, -1};
+	public static class Pair {
+		int x;
+		int y;
 
-    private static class Node {  
-        int x, y;
-        public Node(int y, int x) {
-            this.x = x;
-            this.y = y;
-        }
-    }
+		Pair(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());  
-        M = Integer.parseInt(st.nextToken());  
-        visited = new boolean[N + 1][M + 1];
-        map = new int[N + 1][M + 1];
+	static int n, m;
 
-        for (int i = 1; i <= N; i++) {
-            String s = br.readLine();
-            for (int j = 1; j <= M; j++) {
-               
-                map[i][j] = s.charAt(j-1) - '0'; 
-            }
-        }
-       
-        bfs();
-        System.out.println(map[N][M]);
-    }
+	static int[] dx = { -1, 1, 0, 0 };
+	static int[] dy = { 0, 0, -1, 1 };
 
-    private static void bfs() {
-        Queue<Node> queue = new LinkedList<>();
-        queue.offer(new Node(1, 1));
-        visited[1][1] = true;
-        while (!queue.isEmpty()) {
-            Node curNode = queue.poll(); 
-            for (int i = 0; i < 4; i++) {  
-                int curNearY = curNode.y + nearY[i];
-                int curNearX = curNode.x+ nearX[i];
-              
-                if (curNearX > 0 && curNearY > 0 && curNearY <= N && curNearX <= M && map[curNearY][curNearX] != 0 && visited[curNearY][curNearX] == false) {
-                    queue.offer(new Node(curNearY, curNearX));
-                    map[curNearY][curNearX] = map[curNode.y][curNode.x]+1;
-                    visited[curNearY][curNearX] = true;
-                }
-            }
-        }
-    }
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());
+		String[][] arr = new String[n][m];
+		for (int i = 0; i < n; i++) {
+			String s = br.readLine();
+			arr[i] = s.split("");
+		}
+
+		// bfs
+		boolean[][] visited = new boolean[n][m]; // 들린 곳 = 이제 안 들릴 곳
+//		Queue<Pair> q = new LinkedList<>(); // 들릴 곳
+//		q.add(new int[] {0, 0});
+		Queue<int[]> q = new LinkedList<>(); // 들릴 곳
+		q.add(new int[] { 0, 0, 1 }); // 0: x, 1: y, 2: cnt
+		visited[0][0] = true;
+		while (!q.isEmpty()) {
+			int[] cur = q.remove();
+			int x = cur[0];
+			int y = cur[1];
+			int cnt = cur[2];
+
+//			System.out.println(x + " " + y);
+			for (int i = 0; i < 4; i++) {
+				int nx = x + dx[i];
+				int ny = y + dy[i];
+				// 범위 확인
+				if (nx < 0 || ny < 0 || nx >= m || ny >= n)
+					continue;
+				// 방문 여부 확인
+				if (visited[ny][nx])
+					continue;
+				// 방문한 곳이 0일 때
+				if (arr[ny][nx].equals("0"))
+					continue;
+				if (nx == m - 1 && ny == n - 1) {
+					System.out.println(cnt + 1);
+					return;
+				}
+				visited[ny][nx] = true;
+				q.add(new int[] { nx, ny, cnt + 1 });
+			}
+		}
+	}
 }
