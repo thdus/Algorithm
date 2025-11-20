@@ -2,66 +2,85 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int dx[] = { -1, 1, 0, 0 };
-    static int dy[] = { 0, 0, -1, 1 };
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        char arr[][] = new char[n][n];
-        for (int i = 0; i < n; i++) {
-            String s = br.readLine();
-            arr[i] = s.toCharArray();
-        }
-
-        ArrayList<Integer> list = new ArrayList<>(); // 단지 저장
-        
-        boolean visited[][] = new boolean[n][n];
-        for (int y = 0; y < n; y++) {
-            for (int x = 0; x < n; x++) {
-                // 0이면 넘기기
-                if (arr[y][x] == '0')
-                    continue;
-                // 이미 방문한 곳이면 넘기기
-                if (visited[y][x])
-                    continue;
-
-                // BFS
-                Queue<int[]> q = new LinkedList<>();
-                q.add(new int[] { x, y });
-                visited[y][x] = true;
-                int cnt = 0; // 같은 단기 안의 개수
-                cnt++;
-                while (!q.isEmpty()) {
-                    int now[] = q.remove();
-                    int xx = now[0];
-                    int yy = now[1];
-                    for (int d = 0; d < 4; d++) {
-                        int nx = xx + dx[d];
-                        int ny = yy + dy[d];
-                        // 범위 넘어가면 넘기기
-                        if (nx < 0 || ny < 0 || nx >= n || ny >= n)
-                            continue;
-                        // 0이면 넘기기
-                        if (arr[ny][nx] == '0')
-                            continue;
-                        // 이미 방문한 곳이면 넘기기
-                        if (visited[ny][nx])
-                            continue;
-                        visited[ny][nx] = true; // 방문 처리
-                        cnt++; // 개수 추가
-                        q.add(new int[] { nx, ny }); // Queue 추가
-                    }
-                }
-                list.add(cnt);
-            }
-        }
-        Collections.sort(list); // 단지 오름차순 정렬
-        StringBuilder sb = new StringBuilder();
-        sb.append(list.size() + "\n");
-        for (int i : list) {
-            sb.append(i + "\n");
-        }
-        System.out.println(sb);
-    }
+	static int[] dx = {-1,1,0,0};
+	static int[] dy = {0,0,-1,1};
+	
+	public static void main(String[] args)throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		int n = Integer.parseInt(st.nextToken());
+		
+		char[][] arr = new char[n][n];
+		
+		for(int i=0; i<n; i++) {
+			String s = br.readLine();
+			arr[i] = s.toCharArray();
+		}
+		
+		boolean[][] visited = new boolean[n][n];
+		Queue<int[]> q = new LinkedList();
+		ArrayList<Integer> list = new ArrayList();
+		for(int i=0; i<n; i++) {
+			for(int j=0; j<n; j++) {
+				if(visited[i][j]) continue;
+				
+				if(arr[i][j]=='0') continue;
+				
+				
+				q.add(new int[] {i,j});
+				visited[i][j] = true;
+				int cnt=1;
+				
+				while(!q.isEmpty()) {
+					int[] cur = q.remove();
+					int x = cur[0];
+					int y = cur[1];
+					
+					for(int d=0; d<4; d++) {
+						int nx = x+dx[d];
+						int ny = y+dy[d];
+						
+						if(nx<0||nx>=n||ny<0||ny>=n) continue;
+						if(visited[nx][ny]||arr[nx][ny]=='0') continue;
+						
+						cnt++;
+						visited[nx][ny] = true;
+						q.add(new int[] {nx,ny});
+						
+					}
+				}
+				list.add(cnt);
+			}
+		}
+		Collections.sort(list);
+		StringBuilder sb = new StringBuilder();
+		sb.append(list.size()+"\n");
+		for(int i:list) {
+			sb.append(i+"\n");
+		}
+		
+		System.out.println(sb);
+		
+	}
 }
+
+/**
+ * 목표 : 단지 내 1의 개수
+ * - 첫 방문 일 때만 구하기 : 1이고 visited false
+ * 
+ * 1. 처음부터 끝까지 모든 칸을 다 확인하기
+ * - if 해당 칸 값: 1이고, visited: false이면 -> 새 단지 진입
+ *   - bfs
+ *   - 4방향 확인하면서
+ *   - if 범위내이고, 1이고, visited: false이면
+ *     - cnt += 1
+ *     - visited -> true
+ * 
+ * 2. list에 각 단지별 cnt값 저장
+ * 
+ * 3. list의 크기 출력
+ * 
+ * 4. list 값 오름차순 출력
+ * 
+ */
