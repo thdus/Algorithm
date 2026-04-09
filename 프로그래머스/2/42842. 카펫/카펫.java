@@ -1,20 +1,25 @@
-import java.util.*;
-
-class Solution {    
+class Solution {
+    static int x;
+    static int y;
     public int[] solution(int brown, int yellow) {
         int[] answer = new int[2];
         
-        for(int i=1; i<=Math.sqrt(yellow); i++){
+        int sum = brown+yellow;
+        for(int i=1; i<=yellow; i++){
             if(yellow%i==0){
-                int a = i;
-                int b = yellow/i;
-                if((a+2)*(b+2)-brown==yellow){
-                    answer[0] = b+2;
-                    answer[1] = a+2;
-                }
+                y=i;
+                x =yellow/i;
+                System.out.println(x);
+                System.out.println(y);
+                
+                if((x+2)*(i+2)==sum) 
+                break;
             }
         }
+        answer[0]=x+2;
+        answer[1]=y+2;
         
+
         return answer;
     }
 }
