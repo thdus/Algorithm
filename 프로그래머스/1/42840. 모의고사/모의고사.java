@@ -2,33 +2,33 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] answers) {
-        int[] one = {1, 2, 3, 4, 5};
-        int[] two = {2, 1, 2, 3, 2, 4, 2, 5};
-        int[] three = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
+        int[] a = {1, 2, 3, 4, 5};
+        int[] b = {2, 1, 2, 3, 2, 4, 2, 5};
+        int[] c = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
         
-        int[] score = new int[3];
+        int cnt1=0;
+        int cnt2=0;
+        int cnt3=0;
         
         for(int i=0; i<answers.length; i++){
-            if(answers[i]==one[i%one.length]) score[0]++;
-            if(answers[i]==two[i%two.length]) score[1]++;
-            if(answers[i]==three[i%three.length]) score[2]++;
+            if(answers[i]==a[i%5]) cnt1++;
+            if(answers[i]==b[i%8]) cnt2++;
+            if(answers[i]==c[i%10]) cnt3++;
         }
         
-        int max = Math.max(score[0], Math.max(score[1],score[2]));
+        int max = Math.max(cnt1, Math.max(cnt2, cnt3));
         
-        List<Integer> return1 = new ArrayList();
+        List<Integer> ans = new ArrayList<>();
         
-        for(int i=0; i<3; i++){
-            if(max==score[i]){
-                return1.add(i+1);
-            }
+        if(max==cnt1) ans.add(1);
+        if(max==cnt2) ans.add(2);
+        if(max==cnt3) ans.add(3);
+        
+        int[] answer = new int[ans.size()];
+        for(int i=0; i<ans.size(); i++){
+            answer[i]=ans.get(i);
         }
-        
-        int cnt=0;
-        int[] ans = new int[return1.size()];
-        for(int n:return1){
-            ans[cnt++] = n;
-        }
-       return ans;
+            
+        return answer;
     }
 }
