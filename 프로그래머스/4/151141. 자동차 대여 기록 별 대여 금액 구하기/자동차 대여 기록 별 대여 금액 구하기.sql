@@ -1,25 +1,30 @@
-SELECT 
-    H.HISTORY_ID,
-    FLOOR(
-        CASE
-            WHEN DATEDIFF(H.END_DATE, H.START_DATE) + 1 >= 90
-                THEN C.DAILY_FEE * (DATEDIFF(H.END_DATE, H.START_DATE) + 1) * (1 - DP90.DISCOUNT_RATE / 100)
-            WHEN DATEDIFF(H.END_DATE, H.START_DATE) + 1 >= 30
-                THEN C.DAILY_FEE * (DATEDIFF(H.END_DATE, H.START_DATE) + 1) * (1 - DP30.DISCOUNT_RATE / 100)
-            WHEN DATEDIFF(H.END_DATE, H.START_DATE) + 1 >= 7
-                THEN C.DAILY_FEE * (DATEDIFF(H.END_DATE, H.START_DATE) + 1) * (1 - DP7.DISCOUNT_RATE / 100)
-            ELSE 
-                C.DAILY_FEE * (DATEDIFF(H.END_DATE, H.START_DATE) + 1)
-        END
-    ) AS FEE
-FROM CAR_RENTAL_COMPANY_CAR AS C
-JOIN CAR_RENTAL_COMPANY_RENTAL_HISTORY AS H
-    ON C.CAR_ID = H.CAR_ID
-LEFT JOIN CAR_RENTAL_COMPANY_DISCOUNT_PLAN AS DP7
-    ON C.CAR_TYPE = DP7.CAR_TYPE AND DP7.DURATION_TYPE = '7일 이상'
-LEFT JOIN CAR_RENTAL_COMPANY_DISCOUNT_PLAN AS DP30
-    ON C.CAR_TYPE = DP30.CAR_TYPE AND DP30.DURATION_TYPE = '30일 이상'
-LEFT JOIN CAR_RENTAL_COMPANY_DISCOUNT_PLAN AS DP90
-    ON C.CAR_TYPE = DP90.CAR_TYPE AND DP90.DURATION_TYPE = '90일 이상'
-WHERE C.CAR_TYPE = '트럭'
-ORDER BY FEE DESC, H.HISTORY_ID DESC;
+-- 코드를 입력하세요
+SELECT a.history_id, floor(
+case
+    when datediff(a.end_date,a.start_date)+1>=90 then
+    b.daily_fee*(datediff(a.end_date,a.start_date)+1)*(100-(
+        select discount_rate
+        from CAR_RENTAL_COMPANY_DISCOUNT_PLAN
+        where car_type = '트럭' and duration_type = '90일 이상'
+                                                          ))/100
+    when datediff(a.end_date,a.start_date)+1>=30 then
+    b.daily_fee*(datediff(a.end_date,a.start_date)+1)*(100-(
+        select discount_rate
+        from CAR_RENTAL_COMPANY_DISCOUNT_PLAN
+        where car_type = '트럭' and duration_type = '30일 이상'
+                                                          ))/100
+    when datediff(a.end_date,a.start_date)+1>=7 then
+    b.daily_fee*(datediff(a.end_date,a.start_date)+1)*(100-(
+        select discount_rate
+        from CAR_RENTAL_COMPANY_DISCOUNT_PLAN
+        where car_type = '트럭' and duration_type = '7일 이상'
+                                                          ))/100
+    else
+        b.daily_fee*(datediff(a.end_date,a.start_date)+1)
+    end
+)as fee
+from CAR_RENTAL_COMPANY_RENTAL_HISTORY AS A
+JOIN CAR_RENTAL_COMPANY_CAR AS B 
+ON a.car_id = b.car_id
+where b.car_type='트럭'
+order by fee desc, a.history_id desc;
