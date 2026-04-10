@@ -2,24 +2,25 @@ import java.util.*;
 
 class Solution {
     public int solution(int[][] sizes) {
-        
-        int[] w = new int[sizes.length];
-        int[] h = new int[sizes.length];
+        int a[] = new int[sizes.length];
+        int b[] = new int[sizes.length];
         
         for(int i=0; i<sizes.length; i++){
-            if(sizes[i][0]>=sizes[i][1]){
-                w[i] = sizes[i][0];
-                h[i] = sizes[i][1];
+            int x = sizes[i][0];
+            int y = sizes[i][1];
+            
+            if(x>y){
+                a[i]=x;
+                b[i]=y;
             }else{
-                w[i] = sizes[i][1];
-                h[i] = sizes[i][0];
+                a[i]=y;
+                b[i]=x;
             }
-        }   
+        }
         
-        Arrays.sort(w);
-        Arrays.sort(h);
-   
-        return w[sizes.length-1]*h[sizes.length-1];
+        Arrays.sort(a);
+        Arrays.sort(b);
         
+        return a[sizes.length-1]*b[sizes.length-1];
     }
 }
