@@ -1,0 +1,8 @@
+-- 코드를 입력하세요
+select b.name as NAME, b.count as COUNT
+from ANIMAL_INS a join (SELECT name, count(name) as count
+                        from ANIMAL_INS
+                        group by name) b on a.name=b.name
+                        where b.count>=2
+                        group by b.name
+                        order by b.name;
