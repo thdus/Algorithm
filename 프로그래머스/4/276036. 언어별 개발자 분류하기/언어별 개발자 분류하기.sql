@@ -1,28 +1,11 @@
-SELECT 
-    CASE
-        WHEN (D.SKILL_CODE & FE_CODE) > 0 
-             AND (D.SKILL_CODE & PY_CODE) > 0 THEN 'A'
-             
-        WHEN (D.SKILL_CODE & CS_CODE) > 0 THEN 'B'
-        
-        WHEN (D.SKILL_CODE & FE_CODE) > 0 THEN 'C'
-    END AS GRADE,
-    
-    D.ID,
-    D.EMAIL
-
-FROM DEVELOPERS D
-
-JOIN (
-    SELECT 
-        SUM(CASE WHEN CATEGORY = 'Front End' THEN CODE END) AS FE_CODE,
-        MAX(CASE WHEN NAME = 'Python' THEN CODE END) AS PY_CODE,
-        MAX(CASE WHEN NAME = 'C#' THEN CODE END) AS CS_CODE
-    FROM SKILLCODES
-) S
-
-WHERE 
-    (D.SKILL_CODE & FE_CODE) > 0
-    OR (D.SKILL_CODE & CS_CODE) > 0
-
-ORDER BY GRADE, ID;
+-- 코드를 작성해주세요
+select case when a.SKILL_CODE&b.fe>0 and a.SKILL_CODE&b.py>0 then 'A'
+            when a.SKILL_CODE&b.c>0 then 'B'
+            else 'C' end as GRADE, a.id as ID, a.email as EMAIL
+from DEVELOPERS a join (select 
+                        sum(case when category='Front End' then code end) as fe,
+                        max(case when name='Python' then code end) as py,
+                        max(case when name='C#' then code end) as c
+                       from SKILLCODES) as b
+where b.fe&a.SKILL_CODE>0 or a.SKILL_CODE&b.c>0
+order by grade, id;
