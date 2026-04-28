@@ -1,0 +1,28 @@
+SELECT 
+    CASE
+        WHEN (D.SKILL_CODE & FE_CODE) > 0 
+             AND (D.SKILL_CODE & PY_CODE) > 0 THEN 'A'
+             
+        WHEN (D.SKILL_CODE & CS_CODE) > 0 THEN 'B'
+        
+        WHEN (D.SKILL_CODE & FE_CODE) > 0 THEN 'C'
+    END AS GRADE,
+    
+    D.ID,
+    D.EMAIL
+
+FROM DEVELOPERS D
+
+JOIN (
+    SELECT 
+        SUM(CASE WHEN CATEGORY = 'Front End' THEN CODE END) AS FE_CODE,
+        MAX(CASE WHEN NAME = 'Python' THEN CODE END) AS PY_CODE,
+        MAX(CASE WHEN NAME = 'C#' THEN CODE END) AS CS_CODE
+    FROM SKILLCODES
+) S
+
+WHERE 
+    (D.SKILL_CODE & FE_CODE) > 0
+    OR (D.SKILL_CODE & CS_CODE) > 0
+
+ORDER BY GRADE, ID;
